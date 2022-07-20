@@ -1,0 +1,148 @@
+/* NAME: Gallardo , Matthew
+ * Section : BSCS 2-5
+ * Discount Program
+ * */
+// imports
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class discount extends JFrame implements ActionListener, ItemListener {
+	
+	/**
+	 * 
+	 */
+	//auto generated serial version UID 
+	private static final long serialVersionUID = -2078644193206693333L;
+	// Selling Price and Quantity label and field
+	JLabel lblSellingPrice = new JLabel("Selling  Price:");
+	JLabel lblQuantity = new JLabel("Quantity:");
+	JTextField txtSellingPrice = new JTextField(10);
+	JTextField txtQuantity = new JTextField(10);
+	// Radio Button that will be choose by the user (10 or 15 % discount)
+	JRadioButton radio10 = new JRadioButton("10% Discount",false);
+	JRadioButton radio15 = new JRadioButton("15% Discount",false);
+	//Label and field for total amount . the discount and amount due
+	JLabel lblTotalAmount = new JLabel("Total Amount:");
+	JLabel lblLessDiscount = new JLabel("Less Discount:");
+	JLabel lblAmountDue = new JLabel("Amount Due:");
+	JTextField txtTotalAmount = new JTextField(10);
+	JTextField txtLessDiscount = new JTextField(10);
+	JTextField txtAmountDue = new JTextField(10);
+	// guarantees that only one button can be selected at a time.
+	ButtonGroup btngrp = new ButtonGroup();
+	// buttons for compute and to reset data/inputs
+	JButton btnCompute= new JButton("Compute");
+	JButton btnReset=new JButton("Reset");
+	// double for the variables
+	Double SellingPrice, Quantity,TotalAmount,LessDiscount,AmountDue;
+	
+	
+public discount() {
+	// TODO Auto-generated constructor stub
+	//get content pane and set its layout
+	super();
+	Container cont=getContentPane();
+	setLayout(new FlowLayout());
+	// adding input textfield
+	cont.add(lblSellingPrice);cont.add(txtSellingPrice);
+	cont.add(lblQuantity);cont.add(txtQuantity);	 
+	// adding item listener in radio buttons
+	cont.add(radio10);radio10.addItemListener(this);
+	cont.add(radio15);radio15.addItemListener(this);
+	cont.add(lblTotalAmount);cont.add(txtTotalAmount);
+	cont.add(lblLessDiscount);cont.add(txtLessDiscount);
+	cont.add(lblAmountDue);cont.add(txtAmountDue);
+	// read only text field
+	txtTotalAmount.setEditable(false);
+	txtLessDiscount.setEditable(false);
+	txtAmountDue.setEditable(false);
+	// adding button group
+	btngrp.add(radio10);
+	btngrp.add(radio15);
+	//adding action listener to compute and reset button
+	cont.add(btnCompute);btnCompute.addActionListener(this);
+	cont.add(btnReset);btnReset.addActionListener(this);
+	// for the layout (color, size, visibility, resizability)
+	cont.setBackground(Color.lightGray);
+	setVisible(true);
+	setSize(250,250);
+	setResizable(false); 
+	// text fields (Selling price and quantity) that only accept numbers
+	txtSellingPrice.addKeyListener(new KeyAdapter() {
+		  public void keyTyped(KeyEvent evt) {
+              if (!Character.isDigit(evt.getKeyChar())) {
+                  evt.consume();
+              }
+          }
+      });
+	txtQuantity.addKeyListener(new KeyAdapter() {
+		  public void keyTyped(KeyEvent evt) {
+              if (!Character.isDigit(evt.getKeyChar())) {
+                  evt.consume();
+              }
+          }
+      });
+	
+	
+		// end of constructor
+	
+}
+@Override
+public void itemStateChanged(ItemEvent x) {
+	// TODO Auto-generated method stub
+	// Selling price and quantity input by the user, accepts double
+	SellingPrice=Double.parseDouble(txtSellingPrice.getText());
+	Quantity=Double.parseDouble(txtQuantity.getText());
+	
+	// radio buttons events for 10 and 15 % discount
+	if (x.getSource()==radio10) {
+		TotalAmount=(SellingPrice * Quantity);
+		LessDiscount = TotalAmount*0.10;
+		AmountDue= TotalAmount - LessDiscount;
+		
+	} else { // for the radio button 15 % discount
+		
+		TotalAmount=(SellingPrice * Quantity);
+		LessDiscount = TotalAmount*0.15;
+		AmountDue= TotalAmount - LessDiscount;	
+	}	
+}
+
+// function that clears fields and data for the reset button
+private void clearFields() {
+	txtAmountDue.setText(null);
+	txtLessDiscount.setText(null);
+	txtTotalAmount.setText(null);
+	txtSellingPrice.setText("");
+	txtQuantity.setText("");		
+}
+	
+@Override
+public void actionPerformed(ActionEvent e) {
+	// TODO Auto-generated method stub
+	// Events perform for compute and reset 
+	if(e.getSource()==btnCompute) {
+		txtAmountDue.setText(String.valueOf(AmountDue));
+		txtLessDiscount.setText(String.valueOf(LessDiscount));
+		txtTotalAmount.setText(String.valueOf(TotalAmount));	
+	}
+	// using clearFields function for reset button
+	else {
+		clearFields();
+	}
+}
+
+// main
+public static void main(String[] args) {
+	// TODO Auto-generated method stub
+			discount test = new discount();
+			test.setTitle("Discount Program");
+			test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+		
+}
+// end of main
+	
+}
+
+/*END OF PROGRAM*/
